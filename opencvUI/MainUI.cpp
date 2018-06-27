@@ -6,7 +6,7 @@ using namespace std;
 using namespace cv;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-//∑ª¥ı∏µ «“ √¢
+//Î†åÎçîÎßÅ Ìï† Ï∞Ω
 SDL_Window *window;
 SDL_Renderer *renderer;
 SDL_Event event;
@@ -14,10 +14,10 @@ SDL_Texture *texture;
 TTF_Font * Font_Size[100];
 TTF_Font * Font_Size2[100];
 int TTF_DrawText(SDL_Renderer *Renderer, TTF_Font* Font, char* sentence, int x, int y, SDL_Color Color) {
-	cout << "»˜¿∆";
-	SDL_Surface * Surface = TTF_RenderText_Blended(Font, sentence, Color);// ∆˘∆Æ¿« ¡æ∑˘,πÆ¿⁄ø≠, ªˆ±Ú¿ª ∫∏≥ªº≠ ¿Ø¥œƒ⁄µÂ∑Œ ∑ª¥ı«—¥Ÿ¿Ω º≠««Ω∫ø° ¿˙¿Â«—¥Ÿ
-	SDL_Texture* Texture = SDL_CreateTextureFromSurface(Renderer, Surface);// º≠««Ω∫∑Œ∫Œ≈Õ ≈ÿΩ∫√ƒ∏¶ ª˝º∫«—¥Ÿ
-	SDL_FreeSurface(Surface);//º≠««Ω∫ ∏ﬁ∏∏Æ∏¶ «ÿ¡¶ «ÿ¡ÿ¥Ÿ.
+	cout << "ÌûàÏùó";
+	SDL_Surface * Surface = TTF_RenderText_Blended(Font, sentence, Color);// Ìè∞Ìä∏Ïùò Ï¢ÖÎ•ò,Î¨∏ÏûêÏó¥, ÏÉâÍπîÏùÑ Î≥¥ÎÇ¥ÏÑú Ïú†ÎãàÏΩîÎìúÎ°ú Î†åÎçîÌïúÎã§Ïùå ÏÑúÌîºÏä§Ïóê Ï†ÄÏû•ÌïúÎã§
+	SDL_Texture* Texture = SDL_CreateTextureFromSurface(Renderer, Surface);// ÏÑúÌîºÏä§Î°úÎ∂ÄÌÑ∞ ÌÖçÏä§Ï≥êÎ•º ÏÉùÏÑ±ÌïúÎã§
+	SDL_FreeSurface(Surface);//ÏÑúÌîºÏä§ Î©îÎ™®Î¶¨Î•º Ìï¥Ï†ú Ìï¥Ï§ÄÎã§.
 	SDL_Rect Src;
 	Src.x = 0;
 	Src.y = 0;
@@ -27,9 +27,9 @@ int TTF_DrawText(SDL_Renderer *Renderer, TTF_Font* Font, char* sentence, int x, 
 	Dst.y = y;
 	Dst.w = Src.w;
 	Dst.h = Src.h;
-	SDL_RenderCopy(Renderer, Texture, &Src, &Dst); //±◊¥Î∑Œ ∑ª¥ı∑Øø° ¿˙¿Â«—¥Ÿ
+	SDL_RenderCopy(Renderer, Texture, &Src, &Dst); //Í∑∏ÎåÄÎ°ú Î†åÎçîÎü¨Ïóê Ï†ÄÏû•ÌïúÎã§
 	SDL_DestroyTexture(Texture);
-	return Src.w;// √‚∑¬«“ πÆ¿⁄ø≠¿« ≥ ∫Ò∏¶ π›»Ø
+	return Src.w;// Ï∂úÎ†•Ìï† Î¨∏ÏûêÏó¥Ïùò ÎÑàÎπÑÎ•º Î∞òÌôò
 }
 int main(int argc, char* args[])
 {
@@ -42,15 +42,15 @@ int main(int argc, char* args[])
 	TTF_Init();
 	TTF_Font* font = TTF_OpenFont(".\\font\\NanumGothic.ttf", 35);
 	SDL_Color color = { 0,0,0,0 };
-	window = SDL_CreateWindow("1", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("1", 100, 100, 200, 100, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	texture = IMG_LoadTexture(renderer, ".\\white.png");
 	SDL_RenderCopy(renderer, texture, NULL, &texture_rect);
-	TTF_DrawText(renderer, font, "capture", 400,300, color);
+	TTF_DrawText(renderer, font, "capture", 40,20, color);
 	VideoCapture capture(0);
 	if (!capture.isOpened())
 	{
-		cout << "ƒ´∏ﬁ∂Û∞° ø¨∞·µ«¡ˆ æ ¿Ω" << endl;
+		cout << "Ïπ¥Î©îÎùºÍ∞Ä Ïó∞Í≤∞ÎêòÏßÄ ÏïäÏùå" << endl;
 		exit(1);
 	}
 	double fps = 29.97;
