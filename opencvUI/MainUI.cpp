@@ -1,7 +1,8 @@
 #include <iostream>
 #include "include.h"
 #include <opencv2/opencv.hpp>
-
+#include <mysql.h>
+ 
 using namespace std;
 using namespace cv;
 const int SCREEN_WIDTH = 640;
@@ -31,8 +32,88 @@ int TTF_DrawText(SDL_Renderer *Renderer, TTF_Font* Font, char* sentence, int x, 
 	SDL_DestroyTexture(Texture);
 	return Src.w;// 출력할 문자열의 너비를 반환
 }
+char *  mysqls(char* word)
+{
+
+	MYSQL *conn;
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+
+	char *server = "localhost";
+	char *user = "root";
+	char *password = "1234";
+	char *database = "opencv";
+	char* mean=NULL;
+	cout << word << endl;
+	conn = mysql_init(NULL);
+
+	if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0))
+	{
+		exit(1);
+	}
+	if (mysql_query(conn, "show tables"))
+	{
+		exit(1);
+	}
+
+	res = mysql_use_result(conn);
+	printf("MYSQL Tables in mysql database : \n");
+	while ((row = mysql_fetch_row(res)) != NULL)
+		printf("%s \n", row[0]);
+	string command = "SELECT * FROM term WHERE word = \'";
+	command += word;
+	command += '\'';
+	command += ';';
+	cout << command << endl;
+	if (mysql_query(conn, command.c_str()))
+	{
+		return NULL;
+	}
+
+	res = mysql_use_result(conn);
+
+	printf("Returning List of Names : \n");
+	while ((row = mysql_fetch_row(res)) != NULL)
+	{
+		cout << "YEAH"<<endl;
+		cout << row[0] << endl << row[1] << endl << row[2] << endl << row[3] << endl;
+		mean = row[0];
+		cout << "after" << endl;
+	}
+	cout << mean << endl;
+	
+	mysql_free_result(res);
+	mysql_close(conn);
+	cout << "afterafter" << endl;
+	return mean;
+}
+char * tessract() {
+	string filePath = "Tess.txt";
+	char * word;
+	char* mean=NULL;
+	//Mat image = imread("./caputred.jpg", IMREAD_COLOR);
+	//imwrite("Tess.jpg", image);
+	//system("dir");
+	//system("tesseract Tess.png Tess -l eng");
+	
+	ifstream openFile(filePath.data());
+	if (openFile.is_open()) {
+		string line;
+		while (getline(openFile, line)) {
+			std::vector<char> writable(line.begin(), line.end());
+			writable.push_back('\0');
+			word = &writable[0];
+			mean = mysqls(word);
+		}
+		openFile.close();
+	}
+
+
+	return mean;
+}
 int main(int argc, char* args[])
 {
+	char * mean;
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Rect texture_rect;
 	texture_rect.x = 0;  //the x coordinate
@@ -78,14 +159,17 @@ int main(int argc, char* args[])
 					x = event.button.x;
 					y = event.button.y;
 					SDL_RenderPresent(renderer);
-					imwrite("caputred.jpg", frame);
-
+					//imwrite("caputred.jpg", frame);
+					
+					mean = tessract();
+					std::cout << mean;
 				}
 			}
 
-
+		imshow("camera", frame);
 		SDL_RenderPresent(renderer);
 
 	}
+	waitKey(0);
 	return 0;
 }
